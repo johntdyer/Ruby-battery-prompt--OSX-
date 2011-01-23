@@ -9,8 +9,12 @@ Examples
 	Install by placing file in your path
 
 Empty delta's are black or blue depending on charging status
+  
   -Discharging
    ![text](http://krumpt.com/images/picture1.png)
+
+
+
   -Charging
    ![text](http://krumpt.com/images/picture2.png)
 
