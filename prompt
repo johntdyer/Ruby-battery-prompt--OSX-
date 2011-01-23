@@ -1,0 +1,44 @@
+#!/Users/dyer/.rvm/rubies/ree-1.8.7-2010.02/bin/ruby
+require 'rubygems'
+require 'term/ansicolor'
+include Term::ANSIColor
+
+ # Use this trick to work around namespace cluttering that
+ # happens if you just include Term::ANSIColor:
+  class Color
+    extend Term::ANSIColor
+  end
+
+  def connected?
+    `ioreg -n AppleSmartBattery -r | grep ExternalConnected`.split(" = ")[1].strip
+  end
+
+  def charge
+    # Get current battery percentage 
+    sprintf("%.1f", (
+          `ioreg -n AppleSmartBattery -r | grep CurrentCapacity`.split(" = ")[1].strip.to_f /
+          `ioreg -n AppleSmartBattery -r | grep MaxCapacity`.split(" = ")[1].strip.to_f)
+          ).to_f*10
+  end
+
+  out = ""
+
+  1.upto(charge) {
+     if charge<=3 
+       out=out+"▸".red
+     elsif charge<=6
+       out=out+"▸".yellow
+     else
+       out=out+"▸".green
+     end
+   }
+
+  1.upto(10-charge) {
+    if connected?
+      out=out+"▹".blue
+    else
+      out=out+"▹".black
+    end
+  }
+
+puts out
