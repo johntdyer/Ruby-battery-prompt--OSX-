@@ -11,10 +11,11 @@ Examples
 
   
 Empty delta's are black or blue depending on charging status
-
-  ![text](http://krumpt.http://krumpt.com/picture1.png)   
+  -Discharging
+    ![text](http://krumpt.com/images/picture1.png)   
+  -Charging
+    ![text](http://krumpt.com/images/picture2.png)   
 	
-  ![text](http://krumpt.http://krumpt.com/picture2.png)   
 
 Copyright
 ---------
