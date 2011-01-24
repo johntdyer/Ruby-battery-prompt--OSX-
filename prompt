@@ -27,7 +27,6 @@ include Term::ANSIColor
   end
 
   current_charge=charge
-  puts current_charge
   (current_charge/10).times { full_deltas<<"▸" }
   ((100-current_charge)/10).times {empty_deltas<<"▹"} unless current_charge == 100
 
