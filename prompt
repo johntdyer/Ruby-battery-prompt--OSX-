@@ -9,36 +9,36 @@ include Term::ANSIColor
     extend Term::ANSIColor
   end
 
-  def connected?
-    `ioreg -n AppleSmartBattery -r | grep ExternalConnected`.split(" = ")[1].strip
+  $ioreg_return = `ioreg -n AppleSmartBattery`
+  
+  full_deltas  = ""
+  empty_deltas = ""
+
+  # Returns true or false if battery is connected
+  def battery_connected?
+    $ioreg_return.split(' = ')[4].strip.split("\n")[0] == "Yes" ? true : false
   end
 
+  # Returns the charge of the battery on a base 10 scale
   def charge
-    # Get current battery percentage 
-    sprintf("%.1f", (
-          `ioreg -n AppleSmartBattery -r | grep CurrentCapacity`.split(" = ")[1].strip.to_f /
-          `ioreg -n AppleSmartBattery -r | grep MaxCapacity`.split(" = ")[1].strip.to_f)
-          ).to_f*10
+    ((sprintf("%.1f", (
+         $ioreg_return.split(' = ')[15].strip.split("\n")[0].to_f / $ioreg_return.split(' = ')[9].strip.split("\n")[0].to_f )
+        )).to_f*100).to_i
   end
 
-  out = ""
+  current_charge=charge
+  puts current_charge
+  (current_charge/10).times { full_deltas<<"▸" }
+  ((100-current_charge)/10).times {empty_deltas<<"▹"} unless current_charge == 100
 
-  1.upto(charge) {
-     if charge<=3 
-       out=out+"▸".red
-     elsif charge<=6
-       out=out+"▸".yellow
-     else
-       out=out+"▸".green
-     end
-   }
+   if current_charge<=30
+     full_deltas=full_deltas.red
+   elsif current_charge<=60
+     full_deltas= full_deltas.yellow
+   else
+     full_deltas= full_deltas.green
+   end
 
-  1.upto(10-charge) {
-    if connected?
-      out=out+"▹".blue
-    else
-      out=out+"▹".black
-    end
-  }
-
-puts out
+   empty_deltas=empty_deltas.blue if battery_connected?
+   
+   print full_deltas + empty_deltas
