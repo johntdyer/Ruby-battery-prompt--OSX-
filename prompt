@@ -1,4 +1,4 @@
-#!/Users/dyer/.rvm/rubies/ree-1.8.7-2010.02/bin/ruby
+#!/Users/dyer/.rvm/rubies/ruby-1.8.7-p330/bin/ruby
 require 'rubygems'
 require 'term/ansicolor'
 include Term::ANSIColor
